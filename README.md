@@ -1,2 +1,2 @@
 ## run 
-bun --bun run dev
+use node 20
