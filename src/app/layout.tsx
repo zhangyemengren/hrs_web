@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
-import { Providers } from "@/app/providers";
 import "./globals.css";
 
 const inter = Playfair_Display({ subsets: ["cyrillic"] });
@@ -18,7 +17,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<Providers>{children}</Providers>
+				{children}
 			</body>
 		</html>
 	);
