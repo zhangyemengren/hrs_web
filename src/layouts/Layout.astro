@@ -1,4 +1,6 @@
+
 ---
+import  SpeedInsights  from "@vercel/speed-insights/astro";
 interface Props {
 	title: string;
 }
@@ -49,3 +51,5 @@ const { title } = Astro.props;
 			monospace;
 	}
 </style>
+
+<SpeedInsights />
