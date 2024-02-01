@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+// import Card from '../components/Card.astro';
+import Form from "../react_components/Form";
+import Input from "../react_components/Input";
+import Button from "../react_components/Button";
+---
+
+<Layout title="Dashboard Page">
+    <main>
+        <div>dashboard</div>
+        <Form client:load>
+            <Input name="username" client:load />
+            <Button />
+        </Form>
+    </main>
+</Layout>
+
+<style>
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 800px;
+        max-width: calc(100% - 2rem);
+        color: white;
+        font-size: 20px;
+        line-height: 1.6;
+    }
+</style>
+
