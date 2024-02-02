@@ -6,12 +6,6 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Dashboard Page">
     <main>
         <div>dashboard</div>
-        <form id="form">
-            <label>
-                <input name="username"/>
-            </label>
-            <button type="submit">submit</button>
-        </form>
     </main>
 </Layout>
 
@@ -28,15 +22,6 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-    const form = document.getElementById('form');
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const formData = new FormData(form as HTMLFormElement);
-        const username = formData.get('username');
-        console.log(username);
-        for (let value of formData.values()) {
-            console.log(value);
-        }
-    });
+
 </script>
 

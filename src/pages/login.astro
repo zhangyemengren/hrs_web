@@ -3,11 +3,14 @@ import Layout from '../layouts/Layout.astro';
 // import Card from '../components/Card.astro';
 ---
 
-<Layout title="Dashboard Page">
+<Layout title="Login Page">
     <main>
-        <form>
-            <input type="text">
-            <input type="password">
+        <div>login</div>
+        <form id="form">
+            <label>
+                <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs input-sm" />
+            </label>
+            <button type="submit" class="btn btn-outline btn-info btn-sm">submit</button>
         </form>
     </main>
 </Layout>
@@ -23,4 +26,17 @@ import Layout from '../layouts/Layout.astro';
         line-height: 1.6;
     }
 </style>
+
+<script>
+    const form = document.getElementById('form');
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(form as HTMLFormElement);
+        const username = formData.get('username');
+        console.log(username);
+        for (let value of formData.values()) {
+            console.log(value);
+        }
+    });
+</script>
 
