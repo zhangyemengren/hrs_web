@@ -9,7 +9,7 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -18,7 +18,10 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class="dark:bg-zinc-950">
+		<div id="switch-theme" class="dark:text-white">
+			DARK/LIGHT MODE
+		</div>
 		<slot />
 	</body>
 </html>
@@ -36,7 +39,7 @@ const { title } = Astro.props;
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background: #13151a;
+		//background: #13151a;
 		background-size: 224px;
 	}
 	code {
@@ -51,5 +54,17 @@ const { title } = Astro.props;
 			monospace;
 	}
 </style>
+
+<script>
+	document.getElementById("switch-theme").addEventListener("click", () => {
+		if (document.documentElement.classList.contains("light")) {
+			document.documentElement.classList.remove("light");
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+			document.documentElement.classList.add("light");
+		}
+	});
+</script>
 
 <SpeedInsights />
