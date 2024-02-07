@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, {useRef, useState} from "react";
 import {
     Input,
     Text,
@@ -8,32 +8,45 @@ import {
     Fieldset,
     Field,
     TextLink,
+    Alert,
+    AlertTitle,
+    AlertDescription,
+    AlertActions,
 } from "@/reacts/components";
-import { todo, getEnv } from "@/utils";
+import { todo, post } from "@/utils";
 
+
+// enum LoginStatus {
+//     A = "A",
+// }
 export default function Login() {
     const formRef = useRef<HTMLFormElement>(null);
-    const handleLogin = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const handleLogin = async () => {
         const fromData = new FormData(formRef.current as HTMLFormElement);
         const values = Object.fromEntries(fromData.entries());
-        const { REQUEST_URL } = getEnv();
         console.log(values);
-        fetch(REQUEST_URL + "/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username: "x", password: "xx" }),
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log(err);
+        try {
+            const data = await post({
+                url: "/api/login",
+                payload: values,
             });
+            console.log(data)
+            enum MyStatus {
+                A = "A",
+            }
+            if (data.status === "Success") {
+                window.location.href = "/dashboard";
+            } else  {
+                setIsOpen(true);
+            }
+        }catch (error) {
+            console.log(error)
+            setIsOpen(true);
+        }
     };
     return (
+        <>
         <form ref={formRef}>
             <Fieldset>
                 <Text>Username</Text>
@@ -60,5 +73,15 @@ export default function Login() {
                 </TextLink>
             </Text>
         </form>
+    <Alert open={isOpen} onClose={setIsOpen}>
+        <AlertTitle>Login failed</AlertTitle>
+        <AlertDescription>
+            Something went wrong.
+        </AlertDescription>
+        <AlertActions>
+            <Button onClick={() => setIsOpen(false)}>OK</Button>
+        </AlertActions>
+    </Alert>
+    </>
     );
 }
