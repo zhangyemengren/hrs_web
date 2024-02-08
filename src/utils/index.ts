@@ -15,30 +15,37 @@ export function getEnv(): Env {
 type Request = {
     url: string;
     payload?: Object;
+    method?: string;
 };
 type SuccessResponse = {
-    data: object;
+    data: any;
     status: string;
     msg: string;
 };
 
-export async function post({url, payload}: Request): Promise<SuccessResponse> {
-    const {REQUEST_URL} = getEnv();
+export async function request({
+    url,
+    payload,
+    method = "POST",
+}: Request): Promise<SuccessResponse> {
+    const { REQUEST_URL } = getEnv();
     try {
+        let token: string = localStorage.getItem("token") ?? "";
         const res = await fetch(REQUEST_URL + url, {
-            method: "POST",
+            method,
             headers: {
                 "Content-Type": "application/json",
+                Authorization: token,
             },
-            body: JSON.stringify(payload),
+            body: method === "POST" ? JSON.stringify(payload) : undefined,
         });
         if (!res.ok) {
-            throw new Error("http code error",{
+            throw new Error("http code error", {
                 cause: {
                     status: res.status,
                     statusText: res.statusText,
                     msg: "Failed to fetch",
-                }
+                },
             });
         }
         const json = await res.json();
@@ -47,5 +54,3 @@ export async function post({url, payload}: Request): Promise<SuccessResponse> {
         return Promise.reject(err);
     }
 }
-
-

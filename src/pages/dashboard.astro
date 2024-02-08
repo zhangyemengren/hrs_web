@@ -22,6 +22,11 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-
+    import { request } from "@/utils";
+ const data = await request({
+                method: "GET",
+                url: "/api/modules",
+            });
+            console.log(data)
 </script>
 
