@@ -23,10 +23,14 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
     import { request } from "@/utils";
- const data = await request({
-                method: "GET",
-                url: "/api/modules",
-            });
-            console.log(data)
+    try {
+        const data = await request({
+            method: "GET",
+            url: "/api/modules",
+        });
+        console.log(data);
+    } catch (error) {
+        window.location.href = "/login";
+    }
 </script>
 

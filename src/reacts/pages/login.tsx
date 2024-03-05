@@ -1,30 +1,21 @@
 import React, { useRef, useState } from "react";
-import {
-    Input,
-    Text,
-    Switch,
-    Button,
-    Label,
-    Fieldset,
-    Field,
-    TextLink,
-    Alert,
-    AlertTitle,
-    AlertDescription,
-    AlertActions,
-} from "@/reacts/components";
-import { todo, request } from "@/utils";
+import { Button, Input, Checkbox, Link } from "@nextui-org/react";
+import { Icon } from "@iconify/react";
+import BaseModal from "@/reacts/components/modal";
+import { request } from "@/utils";
 
-// enum LoginStatus {
-//     A = "A",
-// }
 export default function Login() {
     const formRef = useRef<HTMLFormElement>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
     const handleLogin = async () => {
+        console.log(1234);
         const fromData = new FormData(formRef.current as HTMLFormElement);
         const values = Object.fromEntries(fromData.entries());
-        console.log(values);
+        console.log(values, "values");
         try {
             const data = await request({
                 url: "/api/login",
@@ -42,43 +33,66 @@ export default function Login() {
             setIsOpen(true);
         }
     };
+
     return (
-        <>
-            <form ref={formRef}>
-                <Fieldset>
-                    <Text>Username</Text>
-                    <Input name="username" />
-                    <Text>password</Text>
-                    <Input type="password" name="password" />
-                    <Field className="flex justify-between mt-6 flex-wrap gap-2">
-                        <Field className="flex items-center gap-4">
-                            <Switch name="allow_embedding" />
-                            <Label className="cursor-pointer">
-                                Remember me
-                            </Label>
-                        </Field>
-                        <Label onClick={todo} className="cursor-pointer">
-                            forget password?
-                        </Label>
-                    </Field>
-                    <Button className="w-full mt-6" onClick={handleLogin}>
-                        submit
+        <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-rose-400 via-fuchsia-500 to-indigo-500 p-2 sm:p-4 lg:p-8">
+            <div className="flex w-full max-w-sm flex-col gap-4 rounded-large bg-content1 px-8 pb-10 pt-6 shadow-large">
+                <p className="pb-2 text-xl font-medium">Log In</p>
+                <form className="flex flex-col gap-3" ref={formRef}>
+                    <Input
+                        label="Email Address"
+                        name="email"
+                        placeholder="Enter your email"
+                        type="email"
+                        variant="bordered"
+                    />
+                    <Input
+                        endContent={
+                            <button type="button" onClick={toggleVisibility}>
+                                {isVisible ? (
+                                    <Icon
+                                        className="pointer-events-none text-2xl text-default-400"
+                                        icon="solar:eye-closed-linear"
+                                    />
+                                ) : (
+                                    <Icon
+                                        className="pointer-events-none text-2xl text-default-400"
+                                        icon="solar:eye-bold"
+                                    />
+                                )}
+                            </button>
+                        }
+                        label="Password"
+                        name="password"
+                        placeholder="Enter your password"
+                        type={isVisible ? "text" : "password"}
+                        variant="bordered"
+                    />
+                    <div className="flex items-center justify-between px-1 py-2">
+                        <Checkbox name="remember" size="sm">
+                            Remember me
+                        </Checkbox>
+                        <Link className="text-default-500" href="#" size="sm">
+                            Forgot password?
+                        </Link>
+                    </div>
+                    <Button color="primary" onClick={handleLogin}>
+                        Log In
                     </Button>
-                </Fieldset>
-                <Text className="flex mt-6">
-                    Don’t have an account?
-                    <TextLink href="" onClick={todo} className="ml-1">
-                        Sign in
-                    </TextLink>
-                </Text>
-            </form>
-            <Alert open={isOpen} onClose={setIsOpen}>
-                <AlertTitle>Login failed</AlertTitle>
-                <AlertDescription>Something went wrong.</AlertDescription>
-                <AlertActions>
-                    <Button onClick={() => setIsOpen(false)}>OK</Button>
-                </AlertActions>
-            </Alert>
-        </>
+                </form>
+
+                <p className="text-center text-small">
+                    Need to create an account?&nbsp;
+                    <Link href="#" size="sm">
+                        Sign Up
+                    </Link>
+                </p>
+            </div>
+            <BaseModal
+                isOpen={isOpen}
+                onOpenChange={setIsOpen}
+                content={<p>1234</p>}
+            />
+        </div>
     );
 }
