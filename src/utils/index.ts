@@ -1,3 +1,9 @@
+import type {ClassValue} from "clsx";
+
+import clsx from "clsx";
+import {twMerge} from "tailwind-merge";
+
+
 export function todo(): void {
     alert("FUTURE");
 }
@@ -44,7 +50,7 @@ export async function request({
                 cause: {
                     status: res.status,
                     statusText: res.statusText,
-                    msg: "Failed to fetch",
+                    message: "Failed to fetch",
                 },
             });
         }
@@ -54,3 +60,9 @@ export async function request({
         return Promise.reject(err);
     }
 }
+
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
+

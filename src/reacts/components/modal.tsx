@@ -9,15 +9,17 @@ import {
 } from "@nextui-org/react";
 
 export default function BaseModal({
-    title = "Modal Title",
-    content = "Modal Content",
+    title = "Title",
+    content = "",
     isOpen,
     onOpenChange,
+    onOk = () => {},
 }: {
     title?: string;
     isOpen?: boolean;
     onOpenChange: (isOpen: boolean) => void;
     content: React.ReactNode;
+    onOk?: () => void;
 }) {
     return (
         <>
@@ -37,8 +39,11 @@ export default function BaseModal({
                                 >
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Action
+                                <Button color="primary" onPress={() => {
+                                    onOk();
+                                    onClose();
+                                }}>
+                                    Ok
                                 </Button>
                             </ModalFooter>
                         </>

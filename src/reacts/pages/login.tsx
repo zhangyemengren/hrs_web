@@ -8,42 +8,41 @@ export default function Login() {
     const formRef = useRef<HTMLFormElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [error, setError] = useState("");
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     const handleLogin = async () => {
-        console.log(1234);
         const fromData = new FormData(formRef.current as HTMLFormElement);
         const values = Object.fromEntries(fromData.entries());
-        console.log(values, "values");
         try {
             const data = await request({
                 url: "/api/login",
                 payload: values,
             });
-            console.log(data);
+            console.log(data, 'data');
             if (data.status === "Success") {
                 localStorage.setItem("token", data.data as string);
                 window.location.href = "/dashboard";
             } else {
                 setIsOpen(true);
+                setError(data.msg);
             }
         } catch (error) {
-            console.log(error);
             setIsOpen(true);
+            setError("请求失败");
         }
     };
-
     return (
         <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-rose-400 via-fuchsia-500 to-indigo-500 p-2 sm:p-4 lg:p-8">
             <div className="flex w-full max-w-sm flex-col gap-4 rounded-large bg-content1 px-8 pb-10 pt-6 shadow-large">
                 <p className="pb-2 text-xl font-medium">Log In</p>
                 <form className="flex flex-col gap-3" ref={formRef}>
                     <Input
-                        label="Email Address"
-                        name="email"
-                        placeholder="Enter your email"
-                        type="email"
+                        label="Username"
+                        name="username"
+                        placeholder="Enter your username"
+                        type="text"
                         variant="bordered"
                     />
                     <Input
@@ -91,7 +90,7 @@ export default function Login() {
             <BaseModal
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
-                content={<p>1234</p>}
+                content={error}
             />
         </div>
     );

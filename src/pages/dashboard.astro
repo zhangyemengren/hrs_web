@@ -1,11 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-// import Card from '../components/Card.astro';
+import Dashboard from "../reacts/pages/dashboard";
 ---
 
 <Layout title="Dashboard Page">
     <main>
-        <div>dashboard</div>
+        <Dashboard client:load />
     </main>
 </Layout>
 
