@@ -20,7 +20,7 @@ export default function Login() {
                 url: "/api/login",
                 payload: values,
             });
-            console.log(data, 'data');
+            console.log(data, "data");
             if (data.status === "Success") {
                 localStorage.setItem("token", data.data as string);
                 window.location.href = "/dashboard";

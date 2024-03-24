@@ -39,10 +39,13 @@ export default function BaseModal({
                                 >
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={() => {
-                                    onOk();
-                                    onClose();
-                                }}>
+                                <Button
+                                    color="primary"
+                                    onPress={() => {
+                                        onOk();
+                                        onClose();
+                                    }}
+                                >
                                     Ok
                                 </Button>
                             </ModalFooter>

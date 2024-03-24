@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 import Dashboard from "../reacts/pages/dashboard";
 ---
 
@@ -10,27 +10,9 @@ import Dashboard from "../reacts/pages/dashboard";
 </Layout>
 
 <style>
-    main {
-        margin: auto;
-        padding: 1rem;
-        width: 800px;
-        max-width: calc(100% - 2rem);
-        color: white;
-        font-size: 20px;
-        line-height: 1.6;
+    html, body, main {
+        height: 100%;
     }
 </style>
 
-<script>
-    import { request } from "@/utils";
-    try {
-        const data = await request({
-            method: "GET",
-            url: "/api/modules",
-        });
-        console.log(data);
-    } catch (error) {
-        window.location.href = "/login";
-    }
-</script>
 

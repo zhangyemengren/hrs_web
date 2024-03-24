@@ -1,8 +1,7 @@
-import type {ClassValue} from "clsx";
+import type { ClassValue } from "clsx";
 
 import clsx from "clsx";
-import {twMerge} from "tailwind-merge";
-
+import { twMerge } from "tailwind-merge";
 
 export function todo(): void {
     alert("FUTURE");
@@ -61,8 +60,6 @@ export async function request({
     }
 }
 
-
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
-

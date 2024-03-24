@@ -1,71 +1,39 @@
-import React from "react";
-import {Avatar, Button, Spacer, useDisclosure} from "@nextui-org/react";
-import {Icon} from "@iconify/react";
-
-import {AcmeLogo} from "@/reacts/components/sidebar/acme";
-import {sectionItemsWithTeams} from "@/reacts/components/sidebar/sidebar-items";
-import SidebarDrawer from "@/reacts/components/sidebar/sidebar-drawer";
-
+import React, { useEffect } from "react";
+import { ScrollShadow } from "@nextui-org/react";
+import { Logo } from "@/reacts/components/sidebar/logo.tsx";
 import Sidebar from "@/reacts/components/sidebar";
-
+import { items } from "@/reacts/components/sidebar/sidebar-items";
+import { request } from "@/utils";
 
 export default function Dashboard() {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-
-    const content = (
-        <div className="relative flex h-full w-72 flex-1 flex-col p-6">
-            <div className="flex items-center gap-2 px-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground">
-                    <AcmeLogo className="text-background" />
-                </div>
-                <span className="text-small font-bold uppercase text-foreground">Acme</span>
-            </div>
-            <Spacer y={8} />
-            <div className="flex items-center gap-3 px-3">
-                <Avatar isBordered size="sm" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
-                <div className="flex flex-col">
-                    <p className="text-small font-medium text-default-600">John Doe</p>
-                    <p className="text-tiny text-default-400">Product Designer</p>
-                </div>
-            </div>
-
-            <Spacer y={8} />
-
-            <Sidebar defaultSelectedKey="home" items={sectionItemsWithTeams} />
-
-            <Spacer y={8} />
-            <div className="mt-auto flex flex-col">
-                <Button
-                    fullWidth
-                    className="justify-start text-default-500 data-[hover=true]:text-foreground"
-                    startContent={
-                        <Icon className="text-default-500" icon="solar:info-circle-line-duotone" width={24} />
-                    }
-                    variant="light"
-                >
-                    Help & Information
-                </Button>
-                <Button
-                    className="justify-start text-default-500 data-[hover=true]:text-foreground"
-                    startContent={
-                        <Icon
-                            className="rotate-180 text-default-500"
-                            icon="solar:minus-circle-line-duotone"
-                            width={24}
-                        />
-                    }
-                    variant="light"
-                >
-                    Log Out
-                </Button>
-            </div>
-        </div>
-    );
+    useEffect(() => {
+        const fn = async () => {
+            try {
+                const data = await request({
+                    method: "GET",
+                    url: "/api/modules",
+                });
+                console.log(data);
+            } catch (error) {
+                window.location.href = "/login";
+            }
+        };
+        fn();
+    }, []);
 
     return (
-        <div className="flex h-dvh w-full">
-            <Sidebar defaultSelectedKey="home" items={sectionItemsWithTeams} />
-            <div>123214</div>
+        <div className="h-full">
+            <div className="h-full w-72 border-r-small border-divider p-6">
+                <div className="flex items-center gap-2 px-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full">
+                        <Logo />
+                    </div>
+                    <span className="text-small font-bold uppercase">Hrs</span>
+                </div>
+                <ScrollShadow className="max-h-full py-[10vh]">
+                    <Sidebar defaultSelectedKey="home" items={[]} isLoading />
+                </ScrollShadow>
+            </div>
         </div>
     );
 }

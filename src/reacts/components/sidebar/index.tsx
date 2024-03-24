@@ -1,10 +1,17 @@
-import type {ListboxProps, ListboxSectionProps, Selection} from "@nextui-org/react";
-
+import {
+    type ListboxProps,
+    type ListboxSectionProps,
+    type Selection,
+    Listbox,
+    Tooltip,
+    ListboxItem,
+    ListboxSection,
+    Skeleton,
+} from "@nextui-org/react";
 import React from "react";
-import {Listbox, Tooltip, ListboxItem, ListboxSection} from "@nextui-org/react";
-import {Icon} from "@iconify/react";
+import { Icon } from "@iconify/react";
 
-import {cn} from "@/utils";
+import { cn } from "@/utils";
 
 export type SidebarItem = {
     key: string;
@@ -26,6 +33,30 @@ export type SidebarProps = Omit<ListboxProps<SidebarItem>, "children"> & {
     classNames?: ListboxProps["classNames"];
     defaultSelectedKey: string;
     onSelect?: (key: string) => void;
+    isLoading?: boolean;
+};
+
+const LoadingItem = () => {
+    return (
+        <div className="max-w-[300px] w-full flex items-center gap-3">
+            <div>
+                <Skeleton className="flex rounded-full w-12 h-12" />
+            </div>
+            <div className="w-full flex flex-col gap-2">
+                <Skeleton className="h-3 w-3/5 rounded-lg" />
+                <Skeleton className="h-3 w-4/5 rounded-lg" />
+            </div>
+        </div>
+    );
+};
+const Loading = () => {
+    return (
+        <div className="flex flex-col gap-10">
+            {Array.from({ length: 5 }).map((_, index) => (
+                <LoadingItem key={index} />
+            ))}
+        </div>
+    );
 };
 
 const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
@@ -40,11 +71,13 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
             itemClasses: itemClassesProp = {},
             iconClassName,
             className,
+            isLoading,
             ...props
         },
         ref,
     ) => {
-        const [selected, setSelected] = React.useState<React.Key>(defaultSelectedKey);
+        const [selected, setSelected] =
+            React.useState<React.Key>(defaultSelectedKey);
 
         const sectionClasses = {
             ...sectionClassesProp,
@@ -66,13 +99,21 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
             }),
         };
 
+        if (isLoading) {
+            return <Loading />;
+        }
+
         const renderItem = React.useCallback(
             (item: SidebarItem) => {
                 return (
                     <ListboxItem
                         {...item}
                         key={item.key}
-                        endContent={isCompact || hideEndContent ? null : item.endContent ?? null}
+                        endContent={
+                            isCompact || hideEndContent
+                                ? null
+                                : item.endContent ?? null
+                        }
                         startContent={
                             isCompact ? null : item.icon ? (
                                 <Icon
